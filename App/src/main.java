@@ -1,8 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-// Reusing Bogie class from UC7
+// Reusing Bogie class
 class Bogie {
     String name;
     int capacity;
@@ -14,11 +13,11 @@ class Bogie {
 
     @Override
     public String toString() {
-        return name + " (" + capacity + " seats)";
+        return name + " (" + capacity + ")";
     }
 }
 
-public class TrainAppUC8 {
+public class TrainAppUC9 {
 
     public static void main(String[] args) {
 
@@ -29,16 +28,17 @@ public class TrainAppUC8 {
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
         bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("Sleeper", 72)); // duplicate type for grouping
+        bogies.add(new Bogie("AC Chair", 60));
 
-        // Convert to stream and filter
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Group bogies by name (type)
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        // Display filtered bogies
-        System.out.println("Bogies with capacity > 60:");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
+        // Display grouped result
+        System.out.println("Grouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " → " + entry.getValue());
         }
 
         // Program continues...
