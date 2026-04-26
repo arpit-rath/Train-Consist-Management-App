@@ -1,54 +1,41 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TrainAppUC19 {
+public class TrainAppUC20 {
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Sorted array of bogie IDs
-        String[] bogieIDs = {"B101", "B205", "B309", "B412", "B550"};
+        // Train bogie list (empty scenario)
+        List<String> bogies = new ArrayList<>();
 
-        // (Safety step) Ensure sorted order
-        Arrays.sort(bogieIDs);
+        try {
+            // Attempt search
+            searchBogie(bogies, "B101");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        Scanner sc = new Scanner(System.in);
+        System.out.println("Program continues safely...");
+    }
 
-        // Input search key
-        System.out.print("Enter Bogie ID to search: ");
-        String key = sc.nextLine();
+    // Search method with defensive check
+    public static void searchBogie(List<String> bogies, String key) {
 
-        int low = 0;
-        int high = bogieIDs.length - 1;
-        boolean found = false;
+        // Fail-fast validation
+        if (bogies.isEmpty()) {
+            throw new IllegalStateException("Cannot perform search: Train has no bogies.");
+        }
 
-        // Binary Search
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int comparison = key.compareTo(bogieIDs[mid]);
-
-            if (comparison == 0) {
-                System.out.println("Bogie found at position: " + mid);
-                found = true;
-                break;
-            }
-            else if (comparison > 0) {
-                low = mid + 1; // search right half
-            }
-            else {
-                high = mid - 1; // search left half
+        // Linear search logic (example)
+        for (String b : bogies) {
+            if (b.equals(key)) {
+                System.out.println("Bogie found: " + key);
+                return;
             }
         }
 
-        if (!found) {
-            System.out.println("Bogie ID not found.");
-        }
-
-        sc.close();
-
-        // Program continues...
+        System.out.println("Bogie not found.");
     }
 }
